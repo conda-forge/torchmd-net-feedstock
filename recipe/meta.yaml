@@ -59,7 +59,7 @@ test:
     - pytest
   source_files:
     - tests
-    - examples 
+    - examples
 
 about:
   home: https://github.com/torchmd/torchmd-net
