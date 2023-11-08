@@ -36,8 +36,6 @@ requirements:
     - matplotlib-base
     - nnpops
     - pytorch_geometric
-    - pytorch_scatter
-    - pytorch_sparse
     - lightning
     - pydantic <2
     - torchmetrics
