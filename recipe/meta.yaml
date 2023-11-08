@@ -25,11 +25,13 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('cuda') }}  # [cuda_compiler_version not in (undefined, 'None')]
+    - cuda-version =={{ cuda_compiler_version }} # [cuda_compiler_version not in (undefined, 'None')] 
   host:
     - python
     - pip
     - pytorch
     - pytorch =*={{ torch_proc_type }}*
+    - cuda-version =={{ cuda_compiler_version }} # [cuda_compiler_version not in (undefined, 'None')] 
   run:
     - python
     - h5py
