@@ -1,5 +1,5 @@
 {% set name = "torchmd-net" %}
-{% set version = "0.9.0" %}
+{% set version = "0.10.0" %}
 # see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
@@ -9,7 +9,7 @@ package:
 
 source:
   url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
-  sha256: bd92af89101291ffa6dfa9b68d289dbf6012a760a8cfc6c667208cc20a6695f0
+  sha256: 70ae05d2972c2f05d4441c53adb7daf141421e1ac105b8bdec27e8a736271d6a
 
 build:
   entry_points:
@@ -25,23 +25,24 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('cuda') }}  # [cuda_compiler_version not in (undefined, 'None')]
+    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')] 
   host:
     - python
     - pip
     - pytorch
     - pytorch =*={{ torch_proc_type }}*
+    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')] 
   run:
     - python
     - h5py
     - matplotlib-base
     - nnpops
     - pytorch_geometric
-    - pytorch_scatter
-    - pytorch_sparse
     - lightning
     - pydantic <2
     - torchmetrics
     - tqdm
+    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')] 
   run_constrained:
     # additional run constraint to the one from the (version-only) run_export;
     # constraining the CPU builds to CPU pytorch isn't 100% necessary, but cleaner
@@ -59,7 +60,7 @@ test:
     - pytest
   source_files:
     - tests
-    - examples 
+    - examples
 
 about:
   home: https://github.com/torchmd/torchmd-net
