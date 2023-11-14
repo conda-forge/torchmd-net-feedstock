@@ -14,7 +14,7 @@ source:
 build:
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
-  number: 0
+  number: 1
 # Mainly due to NNPOps only having a linux package
   skip: true  # [not linux]
   rpaths:
