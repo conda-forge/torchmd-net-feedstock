@@ -39,18 +39,19 @@ requirements:
     - pytorch =*={{ torch_proc_type }}*
     - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
     {% if cuda_major >= 12 %}
+    - cuda-cudart
     - cuda-cudart-dev
     # No cuda-driver-dev in windows
     - cuda-driver-dev  # [linux]
-    - libcufft-dev  # [linux or win]
-    - libcurand-dev  # [linux or win]
-    - libcublas-dev  # [linux or win]
-    - cuda-nvrtc-dev  # [linux or win]
-    - cuda-nvtx-dev  # [linux or win]
-    - cuda-profiler-api  # [linux or win]
-    - cuda-nvrtc-dev  # [linux or win]
-    - libcusparse-dev  # [linux or win]
-    - libcusolver-dev  # [linux or win]
+    - libcufft-dev
+    - libcurand-dev
+    - libcublas-dev
+    - cuda-nvrtc-dev
+    - cuda-nvtx-dev
+    - cuda-profiler-api
+    - cuda-nvrtc-dev
+    - libcusparse-dev
+    - libcusolver-dev
     {% endif %}
   run:
     - python
@@ -62,7 +63,8 @@ requirements:
     - pydantic <2
     - torchmetrics
     - tqdm
-    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')] 
+    # cuda-version is added here to prevent the conda-forge runner to download a different version during testing, which makes it run out of memory.
+    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
   run_constrained:
     # additional run constraint to the one from the (version-only) run_export;
     # constraining the CPU builds to CPU pytorch isn't 100% necessary, but cleaner
