@@ -3,6 +3,12 @@
 # see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
+{% if cuda_compiler_version in (None, "None", True, False) %}
+{% set cuda_major = 0 %}
+{% else %}
+{% set cuda_major = environ.get("cuda_compiler_version", "11.8").split(".")[0] | int %}
+{% endif %}
+
 package:
   name: {{ name|lower }}
   version: {{ version }}
@@ -14,7 +20,7 @@ source:
 build:
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
-  number: 1
+  number: 2
 # Mainly due to NNPOps only having a linux package
   skip: true  # [not linux]
   rpaths:
@@ -31,7 +37,22 @@ requirements:
     - pip
     - pytorch
     - pytorch =*={{ torch_proc_type }}*
-    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')] 
+    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
+    {% if cuda_major >= 12 %}
+    - cuda-cudart
+    - cuda-cudart-dev
+    # No cuda-driver-dev in windows
+    - cuda-driver-dev  # [linux]
+    - libcufft-dev
+    - libcurand-dev
+    - libcublas-dev
+    - cuda-nvrtc-dev
+    - cuda-nvtx-dev
+    - cuda-profiler-api
+    - cuda-nvrtc-dev
+    - libcusparse-dev
+    - libcusolver-dev
+    {% endif %}
   run:
     - python
     - h5py
@@ -42,7 +63,8 @@ requirements:
     - pydantic <2
     - torchmetrics
     - tqdm
-    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')] 
+    # cuda-version is added here to prevent the conda-forge runner to download a different version during testing, which makes it run out of memory.
+    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
   run_constrained:
     # additional run constraint to the one from the (version-only) run_export;
     # constraining the CPU builds to CPU pytorch isn't 100% necessary, but cleaner
