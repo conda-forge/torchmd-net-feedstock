@@ -1,5 +1,5 @@
 {% set name = "torchmd-net" %}
-{% set version = "0.11.0" %}
+{% set version = "0.12.0" %}
 # see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
@@ -15,7 +15,7 @@ package:
 
 source:
   url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
-  sha256: 32c1cf72a0c3f90838c0b34eebb4894faeb791d1e8ef05ac26c2781d2f4d3583
+  sha256: ab2bbab42c4061eb0586a40ecbab1b45f11b70db91ec5e3dcef8992dcaa28b67
 
 build:
   entry_points:
