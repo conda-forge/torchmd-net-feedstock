@@ -35,7 +35,7 @@ requirements:
   host:
     - python
     - pip
-    - pytorch
+    - libtorch
     - pytorch =*={{ torch_proc_type }}*
     - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
     {% if cuda_major >= 12 %}
