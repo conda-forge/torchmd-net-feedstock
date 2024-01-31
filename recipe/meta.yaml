@@ -16,6 +16,8 @@ package:
 source:
   url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
   sha256: a11c20405ccdf09e38eba6d348b697de304766bda70334b85396c63e402f787a
+  patches:
+      - 01-data.patch  # [osx]
 
 build:
   entry_points:
