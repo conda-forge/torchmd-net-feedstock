@@ -1,5 +1,5 @@
 diff --git a/torchmdnet/data.py b/torchmdnet/data.py
-index 0a8036b..978ed17 100644
+index 0a8036b..6326b6d 100644
 --- a/torchmdnet/data.py
 +++ b/torchmdnet/data.py
 @@ -25,27 +25,21 @@ class FloatCastDatasetWrapper(Dataset):
@@ -33,7 +33,7 @@ index 0a8036b..978ed17 100644
 -        )
 -
 +    def __getattr__(self, __name):
-+        return self._dataset.__getattribute__(__name)
++        return self.__getattribute__("_dataset").__getattribute__(__name)
  
  class DataModule(LightningDataModule):
      """A LightningDataModule for loading datasets from the torchmdnet.datasets module.
