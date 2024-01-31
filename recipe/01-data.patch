@@ -1,33 +1,108 @@
 diff --git a/torchmdnet/data.py b/torchmdnet/data.py
-index 1adc42d..c2030aa 100644
+index 1adc42d..2fec86e 100644
 --- a/torchmdnet/data.py
 +++ b/torchmdnet/data.py
-@@ -42,6 +42,24 @@ class FloatCastDatasetWrapper(Dataset):
-         return getattr(self.dataset, name)
+@@ -16,30 +16,81 @@ from torchmdnet.models.utils import scatter
+ from torchmdnet.models.utils import dtype_mapping
  
  
+-class FloatCastDatasetWrapper(Dataset):
+-    """A wrapper around a torch_geometric dataset that casts all floating point
+-    tensors to a given dtype.
++# class FloatCastDatasetWrapper(Dataset):
++#     """A wrapper around a torch_geometric dataset that casts all floating point
++#     tensors to a given dtype.
++#     """
++
++#     def __init__(self, dataset, dtype=torch.float64):
++#         super(FloatCastDatasetWrapper, self).__init__(
++#             dataset.root, dataset.transform, dataset.pre_transform, dataset.pre_filter
++#         )
++#         self.dataset = dataset
++#         self.dtype = dtype
++
++#     def len(self):
++#         return len(self.dataset)
++
++#     def get(self, idx):
++#         data = self.dataset.get(idx)
++#         for key, value in data:
++#             if torch.is_tensor(value) and torch.is_floating_point(value):
++#                 setattr(data, key, value.to(self.dtype))
++#         return data
++
++#     def __getattr__(self, name):
++#         return getattr(self.dataset, name)
++
++
++
++# def adapt_floats_for_dtype(dataset, dtype=torch.float64):
++#     """
++#     Modifies the `get` method of the given dataset to cast all floating point
++#     tensors to the specified dtype.
++#     """
++#     # Store the original get method
++#     original_get = dataset.get
++#     # Define a new get method that wraps the original one
++#     def get_with_cast(idx):
++#         data = original_get(idx)
++#         for key, value in data:
++#             if torch.is_tensor(value) and torch.is_floating_point(value):
++#                 setattr(data, key, value.to(dtype))
++#         return data
++#     #Do it with a lambda
++#     get_with_cast = lambda idx: original_get(idx).to(dtype)
++#     # Replace the original get method with the new one
++#     dataset.get = get_with_cast
++#     return dataset
++
++
++class DatasetFloatAdapter:
+     """
+-
+-    def __init__(self, dataset, dtype=torch.float64):
+-        super(FloatCastDatasetWrapper, self).__init__(
+-            dataset.root, dataset.transform, dataset.pre_transform, dataset.pre_filter
+-        )
++    A helper class to modify the `get` method of a dataset for casting floating point tensors.
++    """
++    def __init__(self, dataset, dtype):
+         self.dataset = dataset
+         self.dtype = dtype
+-
+-    def len(self):
+-        return len(self.dataset)
+-
+-    def get(self, idx):
+-        data = self.dataset.get(idx)
+-        for key, value in data:
++        self.original_get = dataset.get
++
++    def get_with_cast(self, idx):
++        """
++        A modified `get` method that casts floating point tensors to the specified dtype.
++        """
++        data = self.original_get(idx)
++        for key, value in data.items():  # Assuming `data` is a dictionary
+             if torch.is_tensor(value) and torch.is_floating_point(value):
+-                setattr(data, key, value.to(self.dtype))
++                data[key] = value.to(self.dtype)
+         return data
+ 
+-    def __getattr__(self, name):
+-        return getattr(self.dataset, name)
 +def adapt_floats_for_dtype(dataset, dtype=torch.float64):
 +    """
-+    Modifies the `get` method of the given dataset to cast all floating point
-+    tensors to the specified dtype.
++    Modifies the `get` method of the given dataset to cast all floating point tensors to the specified dtype.
 +    """
-+    # Store the original get method
-+    original_get = dataset.get
-+    # Define a new get method that wraps the original one
-+    def get_with_cast(idx):
-+        data = original_get(idx)
-+        for key, value in data:
-+            if torch.is_tensor(value) and torch.is_floating_point(value):
-+                setattr(data, key, value.to(dtype))
-+        return data
++    adapter = DatasetFloatAdapter(dataset, dtype)
 +    # Replace the original get method with the new one
-+    dataset.get = get_with_cast
++    setattr(dataset, 'get', adapter.get_with_cast)
 +    return dataset
-+
- class DataModule(LightningDataModule):
-     """A LightningDataModule for loading datasets from the torchmdnet.datasets module.
  
-@@ -82,7 +100,7 @@ class DataModule(LightningDataModule):
+ 
+ class DataModule(LightningDataModule):
+@@ -82,7 +133,7 @@ class DataModule(LightningDataModule):
                      self.hparams["dataset_root"], **dataset_arg
                  )
  
