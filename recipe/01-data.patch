@@ -33,7 +33,7 @@ index 0a8036b..6326b6d 100644
 -        )
 -
 +    def __getattr__(self, __name):
-+        return self.__getattribute__("_dataset").__getattribute__(__name)
++        return getattr(self.__getattribute__("_dataset"), __name)
  
  class DataModule(LightningDataModule):
      """A LightningDataModule for loading datasets from the torchmdnet.datasets module.
