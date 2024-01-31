@@ -1,9 +1,27 @@
 diff --git a/torchmdnet/data.py b/torchmdnet/data.py
-index 0a8036b..35d76f8 100644
+index 0a8036b..978ed17 100644
 --- a/torchmdnet/data.py
 +++ b/torchmdnet/data.py
-@@ -38,14 +38,8 @@ class FloatCastDatasetWrapper(Dataset):
-                 setattr(data, key, value.to(self.dtype))
+@@ -25,27 +25,21 @@ class FloatCastDatasetWrapper(Dataset):
+         super(FloatCastDatasetWrapper, self).__init__(
+             dataset.root, dataset.transform, dataset.pre_transform, dataset.pre_filter
+         )
+-        self.dataset = dataset
+-        self.dtype = dtype
++        self._dataset = dataset
++        self._dtype = dtype
+ 
+     def len(self):
+-        return len(self.dataset)
++        return len(self._dataset)
+ 
+     def get(self, idx):
+-        data = self.dataset.get(idx)
++        data = self._dataset.get(idx)
+         for key, value in data:
+             if torch.is_tensor(value) and torch.is_floating_point(value):
+-                setattr(data, key, value.to(self.dtype))
++                setattr(data, key, value.to(self._dtype))
          return data
  
 -    def __getattr__(self, name):
@@ -15,7 +33,7 @@ index 0a8036b..35d76f8 100644
 -        )
 -
 +    def __getattr__(self, __name):
-+        return self.dataset.__getattribute__(__name)
++        return self._dataset.__getattribute__(__name)
  
  class DataModule(LightningDataModule):
      """A LightningDataModule for loading datasets from the torchmdnet.datasets module.
