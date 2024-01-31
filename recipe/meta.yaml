@@ -21,8 +21,10 @@ build:
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
   number: 0
-# Mainly due to NNPOps only having a linux package
-  skip: true  # [not linux]
+  string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
+  string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
+# Mainly due to NNPOps not having a windows package
+  skip: true  # [win]
   rpaths:
     - lib/
     - {{ SP_DIR }}/torch/lib
