@@ -1,3 +1,20 @@
+diff --git a/tests/test_datamodule.py b/tests/test_datamodule.py
+index 4ea9ea5..7a244a5 100644
+--- a/tests/test_datamodule.py
++++ b/tests/test_datamodule.py
+@@ -29,9 +29,12 @@ def test_datamodule_create(tmpdir):
+     assert dl1 is not dl2
+ 
+ 
++import sys
+ @mark.parametrize("energy,forces", [(True, True), (True, False), (False, True)])
+ @mark.parametrize("has_atomref", [True, False])
+ def test_datamodule_standardize(energy, forces, has_atomref, tmpdir):
++    # increase recursion limit
++    sys.setrecursionlimit(10000)
+     args = load_example_args("graph-network")
+     args["standardize"] = True
+     args["train_size"] = 800
 diff --git a/torchmdnet/data.py b/torchmdnet/data.py
 index 0a8036b..1adc42d 100644
 --- a/torchmdnet/data.py
