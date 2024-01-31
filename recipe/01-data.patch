@@ -1,83 +1,21 @@
 diff --git a/torchmdnet/data.py b/torchmdnet/data.py
-index 0a8036b..72165c9 100644
+index 0a8036b..35d76f8 100644
 --- a/torchmdnet/data.py
 +++ b/torchmdnet/data.py
-@@ -15,37 +15,44 @@ from torchmdnet.utils import make_splits, MissingEnergyException
- from torchmdnet.models.utils import scatter
- from torchmdnet.models.utils import dtype_mapping
- 
--
--class FloatCastDatasetWrapper(Dataset):
--    """A wrapper around a torch_geometric dataset that casts all floating point
--    tensors to a given dtype.
-+class CastFloatDataset:
-+    """
-+    A wrapper class for a dataset to cast all floating-point tensors to a specified dtype,
-+    dynamically exposing all members of the original dataset.
-     """
--
-     def __init__(self, dataset, dtype=torch.float64):
--        super(FloatCastDatasetWrapper, self).__init__(
--            dataset.root, dataset.transform, dataset.pre_transform, dataset.pre_filter
--        )
--        self.dataset = dataset
--        self.dtype = dtype
--
--    def len(self):
--        return len(self.dataset)
--
--    def get(self, idx):
--        data = self.dataset.get(idx)
--        for key, value in data:
--            if torch.is_tensor(value) and torch.is_floating_point(value):
--                setattr(data, key, value.to(self.dtype))
-+        self._dataset = dataset  # Use a private attribute to store the original dataset
-+        self._dtype = dtype
-+
-+    def __getitem__(self, idx):
-+        """
-+        Retrieves an item from the dataset and casts floating point tensors to the specified dtype.
-+        """
-+        data = self._dataset[idx]  # Directly access items from the original dataset
-+        if isinstance(data, dict):  # Assuming data is a dictionary
-+            for key, value in data.items():
-+                if torch.is_tensor(value) and torch.is_floating_point(value):
-+                    data[key] = value.to(self._dtype)
+@@ -38,14 +38,8 @@ class FloatCastDatasetWrapper(Dataset):
+                 setattr(data, key, value.to(self.dtype))
          return data
  
-+    def __len__(self):
-+        """
-+        Returns the size of the dataset.
-+        """
-+        return len(self._dataset)
-+
-     def __getattr__(self, name):
+-    def __getattr__(self, name):
 -        # Check if the attribute exists in the underlying dataset
 -        if hasattr(self.dataset, name):
 -            return getattr(self.dataset, name)
 -        raise AttributeError(
 -            f"'{type(self).__name__}' and its underlying dataset have no attribute '{name}'"
 -        )
-+        """
-+        Delegates attribute access to the original dataset if the attribute is not found in the wrapper.
-+        """
-+        return getattr(self._dataset, name)
- 
-+def adapt_floats_for_dtype(dataset, dtype=torch.float64):
-+    """
-+    Wraps the given dataset with `CastFloatDataset` to dynamically expose its interface while casting
-+    floating point tensors to the specified dtype.
-+    """
-+    return CastFloatDataset(dataset, dtype)
+-
++    def __getattr__(self, __name):
++        return self.dataset.__getattribute__(__name)
  
  class DataModule(LightningDataModule):
      """A LightningDataModule for loading datasets from the torchmdnet.datasets module.
-@@ -87,7 +94,7 @@ class DataModule(LightningDataModule):
-                     self.hparams["dataset_root"], **dataset_arg
-                 )
- 
--        self.dataset = FloatCastDatasetWrapper(
-+        self.dataset = adapt_floats_for_dtype(
-             self.dataset, dtype_mapping[self.hparams["precision"]]
-         )
- 
