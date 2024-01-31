@@ -1,0 +1,33 @@
+diff --git a/torchmdnet/data.py b/torchmdnet/data.py
+index 0a8036b..734e244 100644
+--- a/torchmdnet/data.py
++++ b/torchmdnet/data.py
+@@ -27,6 +27,7 @@ class FloatCastDatasetWrapper(Dataset):
+         )
+         self.dataset = dataset
+         self.dtype = dtype
++        self.__getattr__ = self.dataset.__getattr__
+ 
+     def len(self):
+         return len(self.dataset)
+@@ -38,13 +39,13 @@ class FloatCastDatasetWrapper(Dataset):
+                 setattr(data, key, value.to(self.dtype))
+         return data
+ 
+-    def __getattr__(self, name):
+-        # Check if the attribute exists in the underlying dataset
+-        if hasattr(self.dataset, name):
+-            return getattr(self.dataset, name)
+-        raise AttributeError(
+-            f"'{type(self).__name__}' and its underlying dataset have no attribute '{name}'"
+-        )
++    # def __getattr__(self, name):
++    #     # Check if the attribute exists in the underlying dataset
++    #     if hasattr(self.dataset, name):
++    #         return getattr(self.dataset, name)
++    #     raise AttributeError(
++    #         f"'{type(self).__name__}' and its underlying dataset have no attribute '{name}'"
++    #     )
+ 
+ 
+ class DataModule(LightningDataModule):
