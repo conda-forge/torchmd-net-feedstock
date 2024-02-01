@@ -16,22 +16,28 @@ package:
 source:
   url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
   sha256: a11c20405ccdf09e38eba6d348b697de304766bda70334b85396c63e402f787a
+  patches:
+      - 01-data.patch  # [osx]
 
 build:
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
-  number: 0
-# Mainly due to NNPOps only having a linux package
-  skip: true  # [not linux]
+  number: 1
+  string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
+  string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
+# Mainly due to NNPOps not having a windows package
+  skip: true  # [win]
   rpaths:
     - lib/
     - {{ SP_DIR }}/torch/lib
 requirements:
   build:
+    - python                                 # [build_platform != target_platform]
+    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('cuda') }}  # [cuda_compiler_version not in (undefined, 'None')]
-    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')] 
+    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
   host:
     - python
     - pip
