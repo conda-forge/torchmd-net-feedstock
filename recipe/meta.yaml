@@ -1,5 +1,5 @@
 {% set name = "torchmd-net" %}
-{% set version = "0.14.0" %}
+{% set version = "0.14.1" %}
 # see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
@@ -15,14 +15,14 @@ package:
 
 source:
   url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
-  sha256: a11c20405ccdf09e38eba6d348b697de304766bda70334b85396c63e402f787a
+  sha256: 3ee95a8da768f768f6eab47b4feacdd169f0d66cecfbd3fd1b583e5c6f80684f
   patches:
-      - 01-data.patch  # [osx]
+    - 01-data.patch    # [osx]
 
 build:
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
-  number: 1
+  number: 0
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
 # Mainly due to NNPOps not having a windows package
