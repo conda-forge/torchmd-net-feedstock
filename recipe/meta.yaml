@@ -1,5 +1,5 @@
 {% set name = "torchmd-net" %}
-{% set version = "0.14.0" %}
+{% set version = "0.14.2" %}
 # see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
@@ -15,14 +15,12 @@ package:
 
 source:
   url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
-  sha256: a11c20405ccdf09e38eba6d348b697de304766bda70334b85396c63e402f787a
-  patches:
-      - 01-data.patch  # [osx]
+  sha256: d585f79452ccbb1f5241b69b59f2a859cfe55ee9f7c20e51affea3b524934e55
 
 build:
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
-  number: 1
+  number: 0
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
 # Mainly due to NNPOps not having a windows package
@@ -70,7 +68,7 @@ requirements:
     - torchmetrics
     - tqdm
     # cuda-version is added here to prevent the conda-forge runner to download a different version during testing, which makes it run out of memory.
-    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
+#    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
   run_constrained:
     # additional run constraint to the one from the (version-only) run_export;
     # constraining the CPU builds to CPU pytorch isn't 100% necessary, but cleaner
