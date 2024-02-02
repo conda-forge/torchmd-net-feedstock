@@ -35,13 +35,13 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('cuda') }}  # [cuda_compiler_version not in (undefined, 'None')]
-    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
+#    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
   host:
     - python
     - pip
     - libtorch
     - pytorch =*={{ torch_proc_type }}*
-    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
+#    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
     {% if cuda_major >= 12 %}
     - cuda-cudart
     - cuda-cudart-dev
@@ -68,7 +68,7 @@ requirements:
     - torchmetrics
     - tqdm
     # cuda-version is added here to prevent the conda-forge runner to download a different version during testing, which makes it run out of memory.
-    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
+#    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
   run_constrained:
     # additional run constraint to the one from the (version-only) run_export;
     # constraining the CPU builds to CPU pytorch isn't 100% necessary, but cleaner
