@@ -36,6 +36,8 @@ requirements:
     - {{ compiler('cxx') }}
     - {{ compiler('cuda') }}  # [cuda_compiler_version not in (undefined, 'None')]
     - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
+    # Only needed for Python 3.8 and below
+    - libxcrypt  # [py < = 38]
   host:
     - python
     - pip
