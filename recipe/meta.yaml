@@ -69,6 +69,7 @@ requirements:
     - pydantic <2
     - torchmetrics
     - tqdm
+    - aiohttp
     # cuda-version is added here to prevent the conda-forge runner to download a different version during testing, which makes it run out of memory.
     {% if cuda_major < 12 %}
     - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
