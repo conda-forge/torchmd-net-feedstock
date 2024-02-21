@@ -1,5 +1,5 @@
 {% set name = "torchmd-net" %}
-{% set version = "0.14.2" %}
+{% set version = "0.15.2" %}
 # see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
@@ -15,7 +15,7 @@ package:
 
 source:
   url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
-  sha256: d585f79452ccbb1f5241b69b59f2a859cfe55ee9f7c20e51affea3b524934e55
+  sha256: 09f9b96686b685048258d194ae02c10c894a23b96ef6044c97bc1c2fce7e20cf
 
 build:
   entry_points:
@@ -32,12 +32,14 @@ requirements:
   build:
     - python                                 # [build_platform != target_platform]
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-    - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('cuda') }}  # [cuda_compiler_version not in (undefined, 'None')]
     - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
   host:
     - python
+    # Only needed for Python 3.8 and below
+    # xref: https://github.com/conda-forge/linux-sysroot-feedstock/issues/52
+    - libxcrypt  # [py <= 38]
     - pip
     - libtorch
     - pytorch =*={{ torch_proc_type }}*
@@ -67,8 +69,11 @@ requirements:
     - pydantic <2
     - torchmetrics
     - tqdm
+    - aiohttp
     # cuda-version is added here to prevent the conda-forge runner to download a different version during testing, which makes it run out of memory.
-#    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
+    {% if cuda_major < 12 %}
+    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
+    {% endif %}
   run_constrained:
     # additional run constraint to the one from the (version-only) run_export;
     # constraining the CPU builds to CPU pytorch isn't 100% necessary, but cleaner
