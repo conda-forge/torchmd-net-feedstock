@@ -90,6 +90,7 @@ test:
   requires:
     - pip
     - pytest
+    - gxx
   source_files:
     - tests
     - examples
