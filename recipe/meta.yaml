@@ -92,7 +92,7 @@ test:
   requires:
     - pip
     - pytest
-    - clang
+    - cxx_compiler
   source_files:
     - tests
     - examples
