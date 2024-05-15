@@ -69,6 +69,8 @@ requirements:
     - lightning
     - pydantic <2
     - torchmetrics
+    # This is a dependency coming from torchmetrics
+    - pretty_errors
     - tqdm
     - aiohttp
     # cuda-version is added here to prevent the conda-forge runner to download a different version during testing, which makes it run out of memory.
