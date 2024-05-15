@@ -1,5 +1,5 @@
 {% set name = "torchmd-net" %}
-{% set version = "2.1.0" %}
+{% set version = "2.2.0" %}
 # see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
@@ -15,7 +15,7 @@ package:
 
 source:
   url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
-  sha256: 0cea99dbe55d476e3c620b2cf3a17a187845f487f6e4341696342a48709c9bf6
+  sha256: 59ab447fe69ea4f775621422bd5586518188bdb45b498e7d77483816add48b3e
 
 build:
   entry_points:
@@ -33,6 +33,7 @@ requirements:
     - python                                 # [build_platform != target_platform]
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - {{ compiler('cxx') }}
+    - {{ stdlib("c") }}
     - {{ compiler('cuda') }}  # [cuda_compiler_version not in (undefined, 'None')]
     - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
   host:
@@ -68,6 +69,8 @@ requirements:
     - lightning
     - pydantic <2
     - torchmetrics
+    # This is a dependency coming from torchmetrics
+    - pretty_errors
     - tqdm
     - aiohttp
     # cuda-version is added here to prevent the conda-forge runner to download a different version during testing, which makes it run out of memory.
@@ -89,6 +92,8 @@ test:
   requires:
     - pip
     - pytest
+    - gxx  # [linux]
+    - clang  # [osx]
   source_files:
     - tests
     - examples
