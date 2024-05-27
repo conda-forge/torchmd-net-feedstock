@@ -88,7 +88,7 @@ test:
   commands:
     - pip check
     - torchmd-train --help
-    - pytest -v -x -s tests
+    - pytest -v -s tests
   requires:
     - pip
     - pytest
