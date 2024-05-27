@@ -20,11 +20,12 @@ source:
 build:
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
-  number: 0
+  number: 1
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
 # Mainly due to NNPOps not having a windows package
   skip: true  # [win]
+  skip: true  # [py > 311]
   rpaths:
     - lib/
     - {{ SP_DIR }}/torch/lib
@@ -44,6 +45,7 @@ requirements:
     - pip
     - libtorch
     - pytorch =*={{ torch_proc_type }}*
+    - setuptools <70
     - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
     {% if cuda_major >= 12 %}
     - cuda-cudart
@@ -88,7 +90,7 @@ test:
   commands:
     - pip check
     - torchmd-train --help
-    - pytest -v -x -s tests
+    - pytest -v -s tests
   requires:
     - pip
     - pytest
