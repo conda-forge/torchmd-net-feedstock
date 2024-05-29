@@ -63,6 +63,8 @@ requirements:
     {% endif %}
   run:
     - python
+    # Also needed by pytorch for the compile functionality
+    - libxcrypt  # [py <= 38]    
     - h5py
     - matplotlib-base
     - nnpops
