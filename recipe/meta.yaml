@@ -25,7 +25,6 @@ build:
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
 # Mainly due to NNPOps not having a windows package
   skip: true  # [win]
-  skip: true  # [py > 311]
   rpaths:
     - lib/
     - {{ SP_DIR }}/torch/lib
