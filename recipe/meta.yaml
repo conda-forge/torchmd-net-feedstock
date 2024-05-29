@@ -20,12 +20,11 @@ source:
 build:
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
-  number: 1
+  number: 2
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
 # Mainly due to NNPOps not having a windows package
   skip: true  # [win]
-  skip: true  # [py > 311]
   rpaths:
     - lib/
     - {{ SP_DIR }}/torch/lib
@@ -64,6 +63,8 @@ requirements:
     {% endif %}
   run:
     - python
+    # Also needed by pytorch for the compile functionality
+    - libxcrypt  # [py <= 38]
     - h5py
     - matplotlib-base
     - nnpops
@@ -90,12 +91,16 @@ test:
   commands:
     - pip check
     - torchmd-train --help
-    - pytest -v -s tests
+    - pytest -v -s tests  # [py<3.12]
+    # Pytorch compile does not support 3.12
+    - pytest -v -k "not compile" -s tests  # [py>=3.12]
   requires:
     - pip
     - pytest
+    # Needed by pytorch for the compile functionality
     - gxx  # [linux]
     - clang  # [osx]
+    - libxcrypt  # [py <= 38]
   source_files:
     - tests
     - examples
