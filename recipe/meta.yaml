@@ -20,7 +20,7 @@ source:
 build:
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
-  number: 2
+  number: 3
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
 # Mainly due to NNPOps not having a windows package
@@ -35,19 +35,8 @@ requirements:
     - {{ compiler('cxx') }}
     - {{ stdlib("c") }}
     - {{ compiler('cuda') }}  # [cuda_compiler_version not in (undefined, 'None')]
-    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
-  host:
-    - python
-    # Only needed for Python 3.8 and below
-    # xref: https://github.com/conda-forge/linux-sysroot-feedstock/issues/52
-    - libxcrypt  # [py <= 38]
-    - pip
-    - libtorch
-    - pytorch =*={{ torch_proc_type }}*
-    - setuptools <70
-    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
+    - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
     {% if cuda_major >= 12 %}
-    - cuda-cudart
     - cuda-cudart-dev
     # No cuda-driver-dev in windows
     - cuda-driver-dev  # [linux]
@@ -61,6 +50,14 @@ requirements:
     - libcusparse-dev
     - libcusolver-dev
     {% endif %}
+  host:
+    - python
+    # Only needed for Python 3.8 and below
+    # xref: https://github.com/conda-forge/linux-sysroot-feedstock/issues/52
+    - libxcrypt  # [py <= 38]
+    - pip
+    - pytorch =*={{ torch_proc_type }}*
+    - setuptools <70
   run:
     - python
     # Also needed by pytorch for the compile functionality
@@ -76,9 +73,8 @@ requirements:
     - pretty_errors
     - tqdm
     - aiohttp
-    # cuda-version is added here to prevent the conda-forge runner to download a different version during testing, which makes it run out of memory.
-    {% if cuda_major < 12 %}
-    - cuda-version =={{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
+    {% if cuda_major >= 12 %}
+    - cuda-cudart
     {% endif %}
   run_constrained:
     # additional run constraint to the one from the (version-only) run_export;
@@ -95,7 +91,6 @@ test:
     # Pytorch compile does not support 3.12
     - pytest -v -k "not compile" -s tests  # [py>=3.12]
   requires:
-    - pip
     - pytest
     # Needed by pytorch for the compile functionality
     - gxx  # [linux]
