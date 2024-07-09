@@ -91,6 +91,7 @@ test:
     # Pytorch compile does not support 3.12
     - pytest -v -k "not compile" -s tests  # [py>=3.12]
   requires:
+    - pip
     - pytest
     # Needed by pytorch for the compile functionality
     - gxx  # [linux]
