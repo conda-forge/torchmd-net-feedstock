@@ -1,5 +1,5 @@
 {% set name = "torchmd-net" %}
-{% set version = "2.2.0" %}
+{% set version = "2.3.0" %}
 # see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
@@ -15,12 +15,12 @@ package:
 
 source:
   url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
-  sha256: 59ab447fe69ea4f775621422bd5586518188bdb45b498e7d77483816add48b3e
+  sha256: dc79c7696ff2cf1e6ece24d8dc4311e9827c974d1c1773a49a0b14bf8c906efe
 
 build:
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
-  number: 3
+  number: 0
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
 # Mainly due to NNPOps not having a windows package
@@ -91,6 +91,7 @@ test:
     # Pytorch compile does not support 3.12
     - pytest -v -k "not compile" -s tests  # [py>=3.12]
   requires:
+    - pip
     - pytest
     # Needed by pytorch for the compile functionality
     - gxx  # [linux]
