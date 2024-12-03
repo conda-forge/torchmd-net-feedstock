@@ -18,6 +18,8 @@ source:
   sha256: ed2483d86bbf0ef49f89c6c642b7725551b8d6a403a335b2eef4c1d055cff66c
 
 build:
+  # No pytorch-cpu for windows on conda-forge
+  skip: true  # [win and (cuda_compiler_version == "None")]
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
   number: 0
