@@ -1,5 +1,5 @@
 {% set name = "torchmd-net" %}
-{% set version = "2.4.2" %}
+{% set version = "2.4.3" %}
 # see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
@@ -15,7 +15,7 @@ package:
 
 source:
   url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
-  sha256: ed2483d86bbf0ef49f89c6c642b7725551b8d6a403a335b2eef4c1d055cff66c
+  sha256: df3ebe9ab2336b9adc949a3e9a7eefe785ed3edc97e6066659e3f47a0913d838
 
 build:
   # No pytorch-cpu for windows on conda-forge
