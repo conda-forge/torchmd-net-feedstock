@@ -19,7 +19,7 @@ source:
 
 build:
   # No pytorch-cpu for windows on conda-forge
-  skip: true  # [win and (cuda_compiler_version == "None")]
+  skip: true  # [win]
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
   number: 0
