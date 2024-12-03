@@ -23,8 +23,6 @@ build:
   number: 0
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
-# Mainly due to NNPOps not having a windows package
-  skip: true  # [win]
   rpaths:
     - lib/
     - {{ SP_DIR }}/torch/lib
@@ -64,7 +62,6 @@ requirements:
     - libxcrypt  # [py <= 38]
     - h5py
     - matplotlib-base
-    - nnpops
     - pytorch_geometric
     - lightning
     - pydantic <2
