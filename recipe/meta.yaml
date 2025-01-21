@@ -14,10 +14,13 @@ package:
   version: {{ version }}
 
 source:
-  url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
-  sha256: 90de393d18c74b6132e2d9ab6db6a9087417b1584d04de69e30eff62fd99a8dc
+  # url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
+  # sha256: 90de393d18c74b6132e2d9ab6db6a9087417b1584d04de69e30eff62fd99a8dc
+  git_url: https://github.com/torchmd/torchmd-net.git
+  git_rev: "869ac2c"
 
 build:
+  skip: true # [linux or osx]
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
   number: 0
