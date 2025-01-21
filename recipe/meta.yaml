@@ -1,5 +1,5 @@
 {% set name = "torchmd-net" %}
-{% set version = "2.4.3" %}
+{% set version = "2.4.4" %}
 # see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion
 {% set torch_proc_type = "gpu" if cuda_compiler_version != "None" else "cpu" %}
 
