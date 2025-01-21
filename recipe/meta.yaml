@@ -1,7 +1,7 @@
 {% set name = "torchmd-net" %}
 {% set version = "2.4.3" %}
 # see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion
-{% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
+{% set torch_proc_type = "gpu" if cuda_compiler_version != "None" else "cpu" %}
 
 {% if cuda_compiler_version in (None, "None", True, False) %}
 {% set cuda_major = 0 %}
@@ -19,7 +19,7 @@ source:
 
 build:
   # No pytorch-cpu for windows on conda-forge
-  skip: true  # [win]
+  skip: true  # [win or osx]
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
   number: 0
@@ -56,7 +56,7 @@ requirements:
     # xref: https://github.com/conda-forge/linux-sysroot-feedstock/issues/52
     - libxcrypt  # [py <= 38]
     - pip
-    - pytorch =*={{ torch_proc_type }}*
+    - pytorch-{{ torch_proc_type }}
     - setuptools <70
   run:
     - python
@@ -78,7 +78,7 @@ requirements:
   run_constrained:
     # additional run constraint to the one from the (version-only) run_export;
     # constraining the CPU builds to CPU pytorch isn't 100% necessary, but cleaner
-    - pytorch =*={{ torch_proc_type }}*
+    - pytorch-{{ torch_proc_type }}
 
 test:
   imports:
