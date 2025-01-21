@@ -56,6 +56,7 @@ requirements:
     # xref: https://github.com/conda-forge/linux-sysroot-feedstock/issues/52
     - libxcrypt  # [py <= 38]
     - pip
+    - libtorch
     - pytorch-{{ torch_proc_type }}
     - setuptools <70
   run:
