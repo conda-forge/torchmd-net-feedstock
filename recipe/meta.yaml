@@ -15,7 +15,7 @@ package:
 
 source:
   url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
-  sha256: df3ebe9ab2336b9adc949a3e9a7eefe785ed3edc97e6066659e3f47a0913d838
+  sha256: 90de393d18c74b6132e2d9ab6db6a9087417b1584d04de69e30eff62fd99a8dc
 
 build:
   entry_points:
