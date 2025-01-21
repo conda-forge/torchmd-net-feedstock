@@ -50,27 +50,17 @@ requirements:
     {% endif %}
   host:
     - python
-    # Only needed for Python 3.8 and below
-    # xref: https://github.com/conda-forge/linux-sysroot-feedstock/issues/52
-    - libxcrypt  # [py <= 38]
     - pip
     - libtorch
     - pytorch-{{ torch_proc_type }}
     - setuptools <70
   run:
     - python
-    # Also needed by pytorch for the compile functionality
-    - libxcrypt  # [py <= 38]
     - h5py
-    - matplotlib-base
     - pytorch_geometric
     - lightning
-    - pydantic <2
     - torchmetrics
-    # This is a dependency coming from torchmetrics
-    - pretty_errors
     - tqdm
-    - aiohttp
     {% if cuda_major >= 12 %}
     - cuda-cudart
     {% endif %}
@@ -94,7 +84,6 @@ test:
     # Needed by pytorch for the compile functionality
     - gxx  # [linux]
     - clang  # [osx]
-    - libxcrypt  # [py <= 38]
   source_files:
     - tests
     - examples
