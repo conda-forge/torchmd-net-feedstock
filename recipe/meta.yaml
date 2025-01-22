@@ -62,6 +62,7 @@ requirements:
   run:
     - python
     - h5py
+    - libtorch
     - pytorch_geometric
     - lightning
     - torchmetrics
