@@ -29,6 +29,9 @@ build:
   rpaths:
     - lib/
     - {{ SP_DIR }}/torch/lib
+  missing_dso_whitelist:
+    - "*/c10.dll"         # [win]
+    - "*/torch_cpu.dll"   # [win]
 requirements:
   build:
     - python                                 # [build_platform != target_platform]
