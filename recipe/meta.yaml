@@ -20,6 +20,8 @@ source:
   git_rev: "543922d"
 
 build:
+  # Currently there is no pytorch 2.5.1 for Windows and CUDA 11.8. Only 12+
+  skip: true  # [win and (cuda_compiler_version == "11.8")]
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
   number: 0
@@ -31,6 +33,7 @@ build:
   missing_dso_whitelist:
     - "*/c10.dll"         # [win]
     - "*/torch_cpu.dll"   # [win]
+    - "*/c10_cuda.dll"    # [win]
 requirements:
   build:
     - python                                 # [build_platform != target_platform]
