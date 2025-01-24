@@ -1,7 +1,7 @@
 {% set name = "torchmd-net" %}
 {% set version = "2.4.4" %}
 # see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion
-{% set torch_proc_type = "gpu" if cuda_compiler_version != "None" else "cpu" %}
+{% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
 {% if cuda_compiler_version in (None, "None", True, False) %}
 {% set cuda_major = 0 %}
@@ -43,7 +43,7 @@ requirements:
     - {{ stdlib("c") }}
     - {{ compiler('cuda') }}  # [cuda_compiler_version not in (undefined, 'None')]
     - libtorch
-    - pytorch-{{ torch_proc_type }}
+    - pytorch =*={{ torch_proc_type }}*
     - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
     {% if cuda_major >= 12 %}
     - cuda-cudart-dev
@@ -63,7 +63,7 @@ requirements:
     - python
     - pip
     - libtorch
-    - pytorch-{{ torch_proc_type }}
+    - pytorch =*={{ torch_proc_type }}*
     - setuptools <70
     - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
     {% if cuda_major >= 12 %}
@@ -84,7 +84,6 @@ requirements:
     - python
     - h5py
     - libtorch
-    - pytorch-{{ torch_proc_type }}
     - pytorch_geometric
     - lightning
     - torchmetrics
@@ -92,6 +91,8 @@ requirements:
     {% if cuda_major >= 12 %}
     - cuda-cudart
     {% endif %}
+  run_constrained:
+    - pytorch =*={{ torch_proc_type }}*
 
 test:
   imports:
