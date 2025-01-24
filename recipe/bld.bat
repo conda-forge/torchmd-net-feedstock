@@ -1,5 +1,8 @@
 @echo off
 
+
+set "CUDA_TOOLKIT_ROOT_DIR=%CUDA_PATH:\=/%"
+
 if "%cuda_compiler_version%"=="None" (
     set CPU_ONLY=1
 )
