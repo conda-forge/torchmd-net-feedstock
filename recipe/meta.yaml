@@ -17,7 +17,7 @@ source:
   # url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
   # sha256: 90de393d18c74b6132e2d9ab6db6a9087417b1584d04de69e30eff62fd99a8dc
   git_url: https://github.com/torchmd/torchmd-net.git
-  git_rev: "543922d"
+  git_rev: "e2b050165815d8e78c106df6dac3c6bc6599407d"
 
 build:
   entry_points:
