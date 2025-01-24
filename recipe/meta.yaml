@@ -61,6 +61,21 @@ requirements:
     - libtorch
     - pytorch-{{ torch_proc_type }}
     - setuptools <70
+    - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
+    {% if cuda_major >= 12 %}
+    - cuda-cudart-dev
+    # No cuda-driver-dev in windows
+    - cuda-driver-dev  # [linux]
+    - libcufft-dev
+    - libcurand-dev
+    - libcublas-dev
+    - cuda-nvrtc-dev
+    - cuda-nvtx-dev
+    - cuda-profiler-api
+    - cuda-nvrtc-dev
+    - libcusparse-dev
+    - libcusolver-dev
+    {% endif %}
   run:
     - python
     - h5py
