@@ -18,8 +18,9 @@ source:
   sha256: 5d07feb370f3fb54c74f5801aefd3736ac1b94dbf51cfce57cba55c7249fecf1
 
 build:
-  # Currently there is no pytorch 2.5.1 for Windows and CUDA 11.8. Only 12+
+  # Currently there is no pytorch 2.5.1 for Windows and CUDA 11.8. Only 12+. Same for aarch64.
   skip: true  # [win and (cuda_compiler_version == '11.8')]
+  skip: true  # [aarch64 and (cuda_compiler_version == '11.8')]
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
   number: 0
