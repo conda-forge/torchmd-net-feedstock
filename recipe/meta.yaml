@@ -58,10 +58,10 @@ requirements:
     {% endif %}
   host:
     - python
+    - setuptools
     - pip
     - libtorch
     - pytorch =*={{ torch_proc_type }}*
-    - setuptools <70
     - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
     {% if cuda_major >= 12 %}
     - cuda-cudart-dev
