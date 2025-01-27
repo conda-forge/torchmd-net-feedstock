@@ -17,7 +17,7 @@ source:
   # url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
   # sha256: 90de393d18c74b6132e2d9ab6db6a9087417b1584d04de69e30eff62fd99a8dc
   git_url: https://github.com/torchmd/torchmd-net.git
-  git_rev: "854d6e6803f4fd9e14eda6e791c12f5b08769b1f"
+  git_rev: "f10cc8978d91b193f145ec8d565c188a10f4d006"
 
 build:
   # Currently there is no pytorch 2.5.1 for Windows and CUDA 11.8. Only 12+
@@ -67,8 +67,6 @@ requirements:
     - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
     {% if cuda_major >= 12 %}
     - cuda-cudart-dev
-    - cuda-nvtx-dev
-    - cuda-profiler-api
     {% endif %}
   run:
     - python
