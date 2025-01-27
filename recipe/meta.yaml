@@ -1,5 +1,5 @@
 {% set name = "torchmd-net" %}
-{% set version = "2.4.4" %}
+{% set version = "2.4.5" %}
 # see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
@@ -15,11 +15,11 @@ package:
 
 source:
   url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
-  sha256: 90de393d18c74b6132e2d9ab6db6a9087417b1584d04de69e30eff62fd99a8dc
+  sha256: 5d07feb370f3fb54c74f5801aefd3736ac1b94dbf51cfce57cba55c7249fecf1
 
 build:
-  # No pytorch-cpu for windows on conda-forge
-  skip: true  # [win]
+  # Currently there is no pytorch 2.5.1 for Windows and CUDA 11.8. Only 12+
+  skip: true  # [win and (cuda_compiler_version == '11.8')]
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
   number: 0
@@ -28,6 +28,11 @@ build:
   rpaths:
     - lib/
     - {{ SP_DIR }}/torch/lib
+  missing_dso_whitelist:
+    - "*/c10.dll"         # [win]
+    - "*/torch_cpu.dll"   # [win]
+    - "*/c10_cuda.dll"    # [win]
+
 requirements:
   build:
     - python                                 # [build_platform != target_platform]
@@ -35,6 +40,8 @@ requirements:
     - {{ compiler('cxx') }}
     - {{ stdlib("c") }}
     - {{ compiler('cuda') }}  # [cuda_compiler_version not in (undefined, 'None')]
+    - libtorch
+    - pytorch =*={{ torch_proc_type }}*
     - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
     {% if cuda_major >= 12 %}
     - cuda-cudart-dev
@@ -46,38 +53,31 @@ requirements:
     - cuda-nvrtc-dev
     - cuda-nvtx-dev
     - cuda-profiler-api
-    - cuda-nvrtc-dev
     - libcusparse-dev
     - libcusolver-dev
     {% endif %}
   host:
     - python
-    # Only needed for Python 3.8 and below
-    # xref: https://github.com/conda-forge/linux-sysroot-feedstock/issues/52
-    - libxcrypt  # [py <= 38]
     - pip
+    - libtorch
     - pytorch =*={{ torch_proc_type }}*
     - setuptools <70
+    - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
+    {% if cuda_major >= 12 %}
+    - cuda-cudart-dev
+    {% endif %}
   run:
     - python
-    # Also needed by pytorch for the compile functionality
-    - libxcrypt  # [py <= 38]
     - h5py
-    - matplotlib-base
+    - libtorch
     - pytorch_geometric
     - lightning
-    - pydantic <2
     - torchmetrics
-    # This is a dependency coming from torchmetrics
-    - pretty_errors
     - tqdm
-    - aiohttp
     {% if cuda_major >= 12 %}
     - cuda-cudart
     {% endif %}
   run_constrained:
-    # additional run constraint to the one from the (version-only) run_export;
-    # constraining the CPU builds to CPU pytorch isn't 100% necessary, but cleaner
     - pytorch =*={{ torch_proc_type }}*
 
 test:
@@ -95,7 +95,6 @@ test:
     # Needed by pytorch for the compile functionality
     - gxx  # [linux]
     - clang  # [osx]
-    - libxcrypt  # [py <= 38]
   source_files:
     - tests
     - examples
