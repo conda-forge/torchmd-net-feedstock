@@ -1,5 +1,11 @@
 azure:
   free_disk_space: true
+  settings_win:
+    variables:
+      SET_PAGEFILE: "True"
+build_platform:
+  linux_aarch64: linux_64
+  osx_arm64: osx_64
 github:
   branch_name: main
   tooling_branch_name: main
@@ -8,3 +14,6 @@ conda_build:
 conda_forge_output_validation: true
 bot:
   automerge: true
+provider:
+  linux_aarch64: azure
+test: native_and_emulated
