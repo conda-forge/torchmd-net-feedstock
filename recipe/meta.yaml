@@ -42,7 +42,7 @@ requirements:
     - {{ stdlib("c") }}
     - {{ compiler('cuda') }}  # [cuda_compiler_version not in (undefined, 'None')]
     - libtorch
-    - pytorch =*={{ torch_proc_type }}*
+    - pytorch =*=cpu*
     - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
     {% if cuda_major >= 12 %}
     - cuda-cudart-dev
