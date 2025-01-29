@@ -41,7 +41,6 @@ requirements:
     - {{ compiler('cxx') }}
     - {{ stdlib("c") }}
     - {{ compiler('cuda') }}  # [cuda_compiler_version not in (undefined, 'None')]
-    - libtorch
     - pytorch =*=cpu*
     - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
     {% if cuda_major >= 12 %}
@@ -61,7 +60,6 @@ requirements:
     - python
     - setuptools
     - pip
-    - libtorch
     - pytorch =*={{ torch_proc_type }}*
     - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
     {% if cuda_major >= 12 %}
@@ -70,7 +68,6 @@ requirements:
   run:
     - python
     - h5py
-    - libtorch
     - pytorch_geometric
     - lightning
     - torchmetrics
