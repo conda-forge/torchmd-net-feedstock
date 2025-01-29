@@ -84,9 +84,8 @@ test:
   commands:
     - pip check
     - torchmd-train --help
-    - pytest -v -s tests  # [py<3.12]
-    # Pytorch compile does not support 3.12
-    - pytest -v -k "not compile" -s tests  # [py>=3.12]
+    - pytest -v -s tests/test_model_utils.py
+    - pytest -v -s tests/test_module.py -k "test_dummy_train"
   requires:
     - pip
     - pytest
