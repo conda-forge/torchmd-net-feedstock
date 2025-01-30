@@ -1,5 +1,5 @@
-if [ ${cuda_compiler_version} == "None" ]; then
-    export CPU_ONLY=1
-fi
 
+export WITH_CUDA=$([ "${cuda_compiler_version}" == "None" ] && echo "0" || echo "1")
+
+echo "WITH_CUDA: $WITH_CUDA"
 $PYTHON -m pip install . -vv
