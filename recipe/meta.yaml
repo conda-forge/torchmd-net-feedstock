@@ -75,6 +75,7 @@ requirements:
     - tqdm
     {% if cuda_major >= 12 %}
     - cuda-cudart
+    - libcusparse-dev
     {% endif %}
   run_constrained:
     - pytorch =*={{ torch_proc_type }}*
