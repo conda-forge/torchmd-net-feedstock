@@ -41,10 +41,10 @@ requirements:
     - {{ compiler('cxx') }}
     - {{ stdlib("c") }}
     - {{ compiler('cuda') }}                    # [cuda_compiler_version not in (undefined, 'None')]
+    - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
     - python                                    # [build_platform != target_platform]
     - cross-python_{{ target_platform }}        # [build_platform != target_platform]
     - pytorch =*=cpu*                           # [build_platform != target_platform]
-    - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
     {% if cuda_major >= 12 %}
     - cuda-cudart-dev                           # [build_platform != target_platform]
     - cuda-driver-dev                           # [build_platform != target_platform and linux]
