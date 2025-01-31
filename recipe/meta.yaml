@@ -44,7 +44,7 @@ requirements:
     - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
     - python                                    # [build_platform != target_platform]
     - cross-python_{{ target_platform }}        # [build_platform != target_platform]
-    - pytorch =*={{ torch_proc_type }}*         # [not osx_arm64]
+    - pytorch =*={{ torch_proc_type }}*         # [not arm64]
     {% if cuda_major >= 12 %}
     - cuda-cudart-dev
     - cuda-driver-dev                           # [linux]
@@ -54,8 +54,8 @@ requirements:
     - cuda-nvrtc-dev   
     - cuda-nvtx-dev    
     - cuda-profiler-api
-    - libcusparse-dev  
-    - libcusolver-dev  
+    - libcusparse-dev
+    - libcusolver-dev
     {% endif %}
   host:
     - python
