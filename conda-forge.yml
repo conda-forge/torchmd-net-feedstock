@@ -7,7 +7,6 @@ azure:
       MINIFORGE_HOME: "C:\\Miniforge"
 build_platform:
   linux_aarch64: linux_aarch64
-  osx_arm64: osx_64
 github:
   branch_name: main
   tooling_branch_name: main

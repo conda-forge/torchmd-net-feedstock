@@ -61,7 +61,7 @@ requirements:
     - python
     - setuptools
     - pip
-    - pytorch =*={{ torch_proc_type }}*         # [not arm64]
+    - pytorch =*={{ torch_proc_type }}*
     - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
     {% if cuda_major >= 12 %}
     - cuda-cudart-dev
