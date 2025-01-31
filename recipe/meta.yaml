@@ -44,7 +44,7 @@ requirements:
     - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
     - python                                    # [build_platform != target_platform]
     - cross-python_{{ target_platform }}        # [build_platform != target_platform]
-    - pytorch =*=cpu*
+    - pytorch =*={{ torch_proc_type }}*
     {% if cuda_major >= 12 %}
     - cuda-cudart-dev
     - cuda-driver-dev                           # [linux]
