@@ -32,22 +32,11 @@ jobs:
       win_64_cuda_compilercuda-nvcccuda_compiler_version12.6python3.9.____cpython:
         CONFIG: win_64_cuda_compilercuda-nvcccuda_compiler_version12.6python3.9.____cpython
         UPLOAD_PACKAGES: 'True'
-      win_64_cuda_compilernvcccuda_compiler_version11.8python3.10.____cpython:
-        CONFIG: win_64_cuda_compilernvcccuda_compiler_version11.8python3.10.____cpython
-        UPLOAD_PACKAGES: 'True'
-      win_64_cuda_compilernvcccuda_compiler_version11.8python3.11.____cpython:
-        CONFIG: win_64_cuda_compilernvcccuda_compiler_version11.8python3.11.____cpython
-        UPLOAD_PACKAGES: 'True'
-      win_64_cuda_compilernvcccuda_compiler_version11.8python3.12.____cpython:
-        CONFIG: win_64_cuda_compilernvcccuda_compiler_version11.8python3.12.____cpython
-        UPLOAD_PACKAGES: 'True'
-      win_64_cuda_compilernvcccuda_compiler_version11.8python3.9.____cpython:
-        CONFIG: win_64_cuda_compilernvcccuda_compiler_version11.8python3.9.____cpython
-        UPLOAD_PACKAGES: 'True'
   timeoutInMinutes: 360
   variables:
-    CONDA_BLD_PATH: D:\\bld\\
-    MINIFORGE_HOME: D:\Miniforge
+    CONDA_BLD_PATH: C:\bld
+    MINIFORGE_HOME: C:\Miniforge
+    SET_PAGEFILE: 'True'
     UPLOAD_TEMP: D:\\tmp
 
   steps:
