@@ -7,17 +7,15 @@ package:
   version: {{ version }}
 
 source:
-  # url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
-  # sha256: 8bcd2474e08c5bc85fd6bde0f2b1ecea60a34be45d06b9df321d1408ad5a4aad
-  git_url: https://github.com/torchmd/torchmd-net.git
-  git_rev:  d9273518dd96d91696f7d575ee9375aaadf79ae5
+  url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
+  sha256: 8bcd2474e08c5bc85fd6bde0f2b1ecea60a34be45d06b9df321d1408ad5a4aad
 
 build:
   # Currently there is no pytorch 2.5.1 for Windows and CUDA 11.8. Only 12+. Same for aarch64.
-  skip: true  # [not osx]
+  skip: true  # [(win or aarch64) and (cuda_compiler_version == '11.8')]
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
-  number: 1
+  number: 2
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
   rpaths:
@@ -30,12 +28,12 @@ build:
 
 requirements:
   build:
+    - python                                    # [build_platform != target_platform]
+    - cross-python_{{ target_platform }}        # [build_platform != target_platform]
     - {{ compiler('cxx') }}
     - {{ stdlib("c") }}
     - {{ compiler('cuda') }}                    # [cuda_compiler_version not in (undefined, 'None')]
     - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
-    - python                                    # [build_platform != target_platform]
-    - cross-python_{{ target_platform }}        # [build_platform != target_platform]
     - pytorch                                   # [build_platform != target_platform]
     - pytorch =*={{ torch_proc_type }}*         # [(build_platform != target_platform) or win]
     - cuda-cudart-dev                           # [(cuda_compiler_version or "").startswith("12")]
