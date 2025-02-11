@@ -48,7 +48,6 @@ requirements:
     - python
     - setuptools
     - pip
-    - pytorch
     - pytorch =*={{ torch_proc_type }}*
     - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
     - cuda-cudart-dev                           # [(cuda_compiler_version or "").startswith("12")]
