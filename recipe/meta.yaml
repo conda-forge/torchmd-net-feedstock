@@ -15,7 +15,7 @@ build:
   skip: true  # [(win or aarch64) and (cuda_compiler_version == '11.8')]
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
-  number: 2
+  number: 3
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
   rpaths:
@@ -56,7 +56,6 @@ requirements:
     - h5py
     - pytorch_geometric
     - lightning
-    - torchmetrics
     - tqdm
     - cuda-cudart                               # [(cuda_compiler_version or "").startswith("12")]
   run_constrained:
