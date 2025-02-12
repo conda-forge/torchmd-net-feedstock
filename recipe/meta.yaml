@@ -7,8 +7,10 @@ package:
   version: {{ version }}
 
 source:
-  url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
-  sha256: 8bcd2474e08c5bc85fd6bde0f2b1ecea60a34be45d06b9df321d1408ad5a4aad
+  # url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
+  # sha256: 8bcd2474e08c5bc85fd6bde0f2b1ecea60a34be45d06b9df321d1408ad5a4aad
+  git_url: https://github.com/torchmd/torchmd-net.git
+  git_rev:  4add96d309a1895260298f5e912a1472092c3ca5
 
 build:
   # Currently there is no pytorch 2.5.1 for Windows and CUDA 11.8. Only 12+. Same for aarch64.
@@ -56,7 +58,6 @@ requirements:
     - h5py
     - pytorch_geometric
     - lightning
-    - torchmetrics
     - tqdm
     - cuda-cudart                               # [(cuda_compiler_version or "").startswith("12")]
   run_constrained:
