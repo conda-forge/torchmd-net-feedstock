@@ -25,6 +25,9 @@ build:
     - "*/c10.dll"         # [win]
     - "*/torch_cpu.dll"   # [win]
     - "*/c10_cuda.dll"    # [win]
+  # Ignore run exports from the build and host sections
+  ignore_run_exports_from:
+    - {{ compiler('cuda') }}
 
 requirements:
   build:
@@ -57,7 +60,11 @@ requirements:
     - pytorch_geometric
     - lightning
     - tqdm
-    - cuda-cudart                               # [(cuda_compiler_version or "").startswith("12")]
+    # Since we've ignored the run export from the cuda compiler, we pin
+    # the cuda-version manually. Having a pin_compatible on cuda-version with
+    # max_pin='x' and min_pin='x' will constrain it to the same
+    # major version as what we pinned in host.
+    - {{ pin_compatible('cuda-version', max_pin='x', min_pin='x') }}
   run_constrained:
     - pytorch =*={{ torch_proc_type }}*
 
