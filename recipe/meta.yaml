@@ -1,4 +1,4 @@
-{% set version = "2.4.6" %}
+{% set version = "2.4.7" %}
 # see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
-  sha256: 8bcd2474e08c5bc85fd6bde0f2b1ecea60a34be45d06b9df321d1408ad5a4aad
+  sha256: d2b4f8e6bfe86e2c4fca0830a67a603c47b3f5e9239d31beb473bbe46411eb71
 
 build:
   # Currently there is no pytorch 2.5.1 for Windows and CUDA 11.8. Only 12+. Same for aarch64.
@@ -25,6 +25,9 @@ build:
     - "*/c10.dll"         # [win]
     - "*/torch_cpu.dll"   # [win]
     - "*/c10_cuda.dll"    # [win]
+  # Ignore run exports from the build and host sections
+  ignore_run_exports_from:
+    - {{ compiler('cuda') }}
 
 requirements:
   build:
@@ -57,7 +60,11 @@ requirements:
     - pytorch_geometric
     - lightning
     - tqdm
-    - cuda-cudart                               # [(cuda_compiler_version or "").startswith("12")]
+    # Since we've ignored the run export from the cuda compiler, we pin
+    # the cuda-version manually. Having a pin_compatible on cuda-version with
+    # max_pin='x' and min_pin='x' will constrain it to the same
+    # major version as what we pinned in host.
+    - {{ pin_compatible('cuda-version', max_pin='x', min_pin='x') }}
   run_constrained:
     - pytorch =*={{ torch_proc_type }}*
 
