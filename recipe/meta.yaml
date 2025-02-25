@@ -1,4 +1,4 @@
-{% set version = "2.4.6" %}
+{% set version = "2.4.7" %}
 # see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
