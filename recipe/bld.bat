@@ -1,6 +1,10 @@
 @echo on
 
-set "WITH_CUDA=%cuda_compiler_version%" NEQ "None"
+IF "%cuda_compiler_version%"=="None" (
+    SET WITH_CUDA="0"
+) ELSE (
+    SET WITH_CUDA="1"
+)
 
 echo "WITH_CUDA: %WITH_CUDA%"
 
