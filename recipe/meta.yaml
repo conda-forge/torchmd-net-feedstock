@@ -1,4 +1,4 @@
-{% set version = "2.4.7" %}
+{% set version = "2.4.8" %}
 # see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
@@ -8,14 +8,14 @@ package:
 
 source:
   url: https://github.com/torchmd/torchmd-net/archive/{{ version }}.tar.gz
-  sha256: d2b4f8e6bfe86e2c4fca0830a67a603c47b3f5e9239d31beb473bbe46411eb71
+  sha256: 86162f6d5c03db550a751a29c6f3cf838759a3971e5adc0b1374cea170c1fa93
 
 build:
   # Currently there is no pytorch 2.5.1 for Windows and CUDA 11.8. Only 12+. Same for aarch64.
   skip: true  # [(win or aarch64) and (cuda_compiler_version == '11.8')]
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
-  number: 4
+  number: 0
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
   rpaths:
@@ -74,9 +74,9 @@ test:
   commands:
     - pip check
     - torchmd-train --help
-    - pytest -v -s tests  # [py<3.12]
+    - pytest -v -s tests  # [py<3.12 and not aarch64]
     # Pytorch compile does not support 3.12
-    - pytest -v -k "not compile" -s tests  # [py>=3.12]
+    - pytest -v -k "not compile" -s tests  # [py>=3.12 and not aarch64]
   requires:
     - pip
     - pytest
