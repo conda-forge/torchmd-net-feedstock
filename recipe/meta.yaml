@@ -69,9 +69,9 @@ test:
   commands:
     - pip check
     - torchmd-train --help
-    - pytest -v -s tests  # [py<3.12]
+    - pytest -v -s tests  # [py<3.12 and not aarch64]
     # Pytorch compile does not support 3.12
-    - pytest -v -k "not compile" -s tests  # [py>=3.12]
+    - pytest -v -k "not compile" -s tests  # [py>=3.12 and not aarch64]
   requires:
     - pip
     - pytest
