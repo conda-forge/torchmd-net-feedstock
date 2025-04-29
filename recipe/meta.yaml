@@ -46,7 +46,7 @@ requirements:
     - libcusolver-dev                           # [(cuda_compiler_version or "").startswith("12")]
   host:
     - python
-    - setuptools
+    - setuptools>=78
     - pip
     - pytorch =*={{ torch_proc_type }}*
     - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
