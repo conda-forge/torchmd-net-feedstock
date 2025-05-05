@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://github.com/torchmd/torchmd-net/archive/v{{ version }}.tar.gz
-  sha256: 59f2765fd7078afdac0ab2736da4268dbf2907923f0e0aa2b54004ebc6d03b1c
+  sha256: ca1d3be94928ff9838c2292d3644597ca8014fc3e8d8547bdd4ba314d72aaa43
 
 build:
   # Currently there is no pytorch 2.5.1 for Windows and CUDA 11.8. Only 12+. Same for aarch64.
