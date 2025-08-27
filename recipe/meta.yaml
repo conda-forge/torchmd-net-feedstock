@@ -1,4 +1,4 @@
-{% set version = "2.4.10" %}
+{% set version = "2.4.11" %}
 # see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
@@ -8,14 +8,14 @@ package:
 
 source:
   url: https://github.com/torchmd/torchmd-net/archive/v{{ version }}.tar.gz
-  sha256: ca1d3be94928ff9838c2292d3644597ca8014fc3e8d8547bdd4ba314d72aaa43
+  sha256: ac76aa652c7e4ae38029d58605b0e200d4b7d4185f0c55d7ffe50f4943357fc4
 
 build:
   # Currently there is no pytorch 2.5.1 for Windows and CUDA 11.8. Only 12+. Same for aarch64.
   skip: true  # [(win or aarch64) and (cuda_compiler_version == '11.8')]
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
-  number: 1
+  number: 0
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
   string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
   rpaths:
