@@ -47,6 +47,7 @@ requirements:
   host:
     - python
     - setuptools >=78
+    - setuptools-scm
     - pip
     - pytorch =*={{ torch_proc_type }}*
     - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
@@ -73,7 +74,6 @@ test:
   requires:
     - pip
     - pytest
-    - setuptools_scm
     # Needed by pytorch for the compile functionality
     - cxx-compiler
   source_files:
