@@ -73,9 +73,9 @@ test:
   requires:
     - pip
     - pytest
+    - setuptools_scm
     # Needed by pytorch for the compile functionality
-    - gxx  # [linux]
-    - clang  # [osx]
+    - cxx-compiler
   source_files:
     - tests
     - examples
