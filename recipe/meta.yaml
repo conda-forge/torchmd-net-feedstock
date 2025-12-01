@@ -11,8 +11,7 @@ source:
   sha256: 8c64952db38997555c52154d9f0f0d1becdfbd74ad5914825c659d34b2808842
 
 build:
-  # Currently there is no pytorch 2.5.1 for Windows and CUDA 11.8. Only 12+. Same for aarch64.
-  skip: true  # [(win or aarch64) and (cuda_compiler_version == '11.8')]
+  skip: true  # [win or aarch64]
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
   number: 0
@@ -35,32 +34,32 @@ requirements:
     - {{ compiler('cuda') }}                    # [cuda_compiler_version not in (undefined, 'None')]
     - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
     - pytorch                                   # [build_platform != target_platform]
-    - pytorch =*={{ torch_proc_type }}*         # [(build_platform != target_platform) or win]
-    - cuda-cudart-dev                           # [(cuda_compiler_version or "").startswith("12")]
-    - cuda-driver-dev                           # [(cuda_compiler_version or "").startswith("12") and linux]
-    - libcufft-dev                              # [(cuda_compiler_version or "").startswith("12")]
-    - libcurand-dev                             # [(cuda_compiler_version or "").startswith("12")]
-    - libcublas-dev                             # [(cuda_compiler_version or "").startswith("12")]
-    - cuda-nvrtc-dev                            # [(cuda_compiler_version or "").startswith("12")]
-    - libcusparse-dev                           # [(cuda_compiler_version or "").startswith("12")]
-    - libcusolver-dev                           # [(cuda_compiler_version or "").startswith("12")]
+    - pytorch * {{ torch_proc_type }}*          # [(build_platform != target_platform) or win]
+    - cuda-cudart-dev                           # [cuda_compiler_version not in (undefined, 'None')]
+    - cuda-driver-dev                           # [cuda_compiler_version not in (undefined, 'None') and linux]
+    - libcufft-dev                              # [cuda_compiler_version not in (undefined, 'None')]
+    - libcurand-dev                             # [cuda_compiler_version not in (undefined, 'None')]
+    - libcublas-dev                             # [cuda_compiler_version not in (undefined, 'None')]
+    - cuda-nvrtc-dev                            # [cuda_compiler_version not in (undefined, 'None')]
+    - libcusparse-dev                           # [cuda_compiler_version not in (undefined, 'None')]
+    - libcusolver-dev                           # [cuda_compiler_version not in (undefined, 'None')]
   host:
     - python
     - setuptools >=78
     - setuptools-scm
     - pip
-    - pytorch =*={{ torch_proc_type }}*
+    - pytorch * {{ torch_proc_type }}*
     - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
-    - cuda-cudart-dev                           # [(cuda_compiler_version or "").startswith("12")]
+    - cuda-cudart-dev                           # [cuda_compiler_version not in (undefined, 'None')]
   run:
     - python
     - h5py
     - pytorch_geometric
     - lightning
     - tqdm
-    - cuda-cudart                               # [(cuda_compiler_version or "").startswith("12")]
+    - cuda-cudart                               # [cuda_compiler_version]
   run_constrained:
-    - pytorch =*={{ torch_proc_type }}*
+    - pytorch * {{ torch_proc_type }}*
 
 test:
   imports:
