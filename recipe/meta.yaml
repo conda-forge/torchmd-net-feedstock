@@ -1,4 +1,4 @@
-{% set version = "2.4.12" %}
+{% set version = "2.4.13" %}
 # see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
@@ -8,11 +8,11 @@ package:
 
 source:
   url: https://github.com/torchmd/torchmd-net/archive/v{{ version }}.tar.gz
-  sha256: 8c64952db38997555c52154d9f0f0d1becdfbd74ad5914825c659d34b2808842
+  sha256: decb7b574966d836b1a221f3c2b5508a0cb7eb9a48c7003b635198f5bc28e7cb
 
 build:
   script_env:
-    - SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}
+    - SETUPTOOLS_SCM_PRETEND_VERSION=v{{ version }}
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
   number: 0
