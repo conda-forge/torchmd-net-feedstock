@@ -11,6 +11,8 @@ source:
   sha256: 8c64952db38997555c52154d9f0f0d1becdfbd74ad5914825c659d34b2808842
 
 build:
+  script_env:
+    - SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
   number: 0
