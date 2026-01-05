@@ -11,7 +11,6 @@ source:
 
 build:
   noarch: python
-  skip: true  # [py<39]
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
@@ -46,6 +45,7 @@ test:
     - python {{ python_min }}
 
 about:
+  home: https://github.com/torchmd/torchmd-net
   summary: TorchMD-NET provides state-of-the-art neural networks potentials for biomolecular systems
   license: MIT
   license_file: LICENSE
