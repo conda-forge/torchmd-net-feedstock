@@ -1,99 +1,51 @@
-{% set version = "2.4.11" %}
-# see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion
-{% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
+{% set name = "torchmd-net" %}
+{% set version = "2.5.0" %}
 
 package:
-  name: torchmd-net
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://github.com/torchmd/torchmd-net/archive/v{{ version }}.tar.gz
-  sha256: ac76aa652c7e4ae38029d58605b0e200d4b7d4185f0c55d7ffe50f4943357fc4
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/torchmd_net-{{ version }}.tar.gz
+  sha256: deb255d77720a04b0d2972e71977130da2ad918734c943fde72452d80bf83e92
 
 build:
-  # Currently there is no pytorch 2.5.1 for Windows and CUDA 11.8. Only 12+. Same for aarch64.
-  skip: true  # [(win or aarch64) and (cuda_compiler_version == '11.8')]
+  noarch: python
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
-  string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != "None"]
-  string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == "None"]
-  rpaths:
-    - lib/
-    - {{ SP_DIR }}/torch/lib
-  missing_dso_whitelist:
-    - "*/c10.dll"         # [win]
-    - "*/torch_cpu.dll"   # [win]
-    - "*/c10_cuda.dll"    # [win]
 
 requirements:
-  build:
-    - python                                    # [build_platform != target_platform]
-    - cross-python_{{ target_platform }}        # [build_platform != target_platform]
-    - {{ compiler('cxx') }}
-    - {{ stdlib("c") }}
-    - {{ compiler('cuda') }}                    # [cuda_compiler_version not in (undefined, 'None')]
-    - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
-    - pytorch                                   # [build_platform != target_platform]
-    - pytorch =*={{ torch_proc_type }}*         # [(build_platform != target_platform) or win]
-    - cuda-cudart-dev                           # [(cuda_compiler_version or "").startswith("12")]
-    - cuda-driver-dev                           # [(cuda_compiler_version or "").startswith("12") and linux]
-    - libcufft-dev                              # [(cuda_compiler_version or "").startswith("12")]
-    - libcurand-dev                             # [(cuda_compiler_version or "").startswith("12")]
-    - libcublas-dev                             # [(cuda_compiler_version or "").startswith("12")]
-    - cuda-nvrtc-dev                            # [(cuda_compiler_version or "").startswith("12")]
-    - libcusparse-dev                           # [(cuda_compiler_version or "").startswith("12")]
-    - libcusolver-dev                           # [(cuda_compiler_version or "").startswith("12")]
   host:
-    - python
+    - python {{ python_min }}
     - setuptools >=78
+    - setuptools-scm >=8
     - pip
-    - pytorch =*={{ torch_proc_type }}*
-    - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version not in (undefined, 'None')]
-    - cuda-cudart-dev                           # [(cuda_compiler_version or "").startswith("12")]
   run:
-    - python
+    - python >={{ python_min }}
     - h5py
+    - pytorch
     - pytorch_geometric
     - lightning
     - tqdm
-    - cuda-cudart                               # [(cuda_compiler_version or "").startswith("12")]
-  run_constrained:
-    - pytorch =*={{ torch_proc_type }}*
+    - numpy
+    - ase
 
 test:
   imports:
     - torchmdnet
   commands:
-    # - pip check
     - torchmd-train --help
-    - pytest -v -s tests  # [py<3.12 and not aarch64]
-    # Pytorch compile does not support 3.12
-    - pytest -v -k "not compile" -s tests  # [py>=3.12 and not aarch64]
   requires:
-    - pip
-    - pytest
-    # Needed by pytorch for the compile functionality
-    - gxx  # [linux]
-    - clang  # [osx]
-  source_files:
-    - tests
-    - examples
+    - python {{ python_min }}
 
 about:
   home: https://github.com/torchmd/torchmd-net
+  summary: TorchMD-NET provides state-of-the-art neural networks potentials for biomolecular systems
   license: MIT
-  license_file: README.md
-  summary: 'State of the art Pytorch Neural Network Potentials (NNPs)'
-  description: |
-    TorchMD-NET provides state-of-the-art neural networks potentials (NNPs) and a mechanism to train them. It offers efficient and fast implementations of several NNPs and it is integrated in GPU-accelerated molecular dynamics code like ACEMD, OpenMM and TorchMD. TorchMD-NET exposes its NNPs as PyTorch modules.
-  doc_url: https://github.com/torchmd/torchmd-net
-  dev_url: https://github.com/torchmd/torchmd-net
+  license_file: LICENSE
 
 extra:
   recipe-maintainers:
-    - sef43
     - stefdoerr
-    - RaulPPelaez
-    - raimis
-    - giadefa
