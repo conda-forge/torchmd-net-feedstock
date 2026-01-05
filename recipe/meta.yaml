@@ -1,13 +1,15 @@
 {% set name = "torchmd-net" %}
+{% set org = "torchmd" %}
 {% set version = "2.5.0" %}
+{% set sha256 = "82cdef271dadfb1f598711e777fd4b319f1c8a66f2520935c1cee5385cf3dfd0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/torchmd_net-{{ version }}.tar.gz
-  sha256: deb255d77720a04b0d2972e71977130da2ad918734c943fde72452d80bf83e92
+  url: https://github.com/{{ org }}/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz
+  sha256: {{ sha256 }}
 
 build:
   noarch: python
