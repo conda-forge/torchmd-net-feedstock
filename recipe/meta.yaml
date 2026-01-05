@@ -30,7 +30,6 @@ requirements:
     - lightning
     - tqdm
     - numpy
-    - triton
     - ase
 
 test:
