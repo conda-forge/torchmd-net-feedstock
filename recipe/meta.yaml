@@ -10,6 +10,7 @@ source:
   sha256: deb255d77720a04b0d2972e71977130da2ad918734c943fde72452d80bf83e92
 
 build:
+  noarch: python
   skip: true  # [py<39]
   entry_points:
     - torchmd-train = torchmdnet.scripts.train:main
