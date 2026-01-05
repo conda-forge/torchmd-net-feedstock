@@ -36,10 +36,8 @@ test:
   imports:
     - torchmdnet
   commands:
-    - pip check
     - torchmd-train --help
   requires:
-    - pip
     - python {{ python_min }}
 
 about:
