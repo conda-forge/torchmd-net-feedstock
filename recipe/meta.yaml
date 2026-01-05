@@ -19,12 +19,12 @@ build:
 
 requirements:
   host:
-    - python >=3.9
+    - python {{ python_min }}
     - setuptools >=78
     - setuptools-scm >=8
     - pip
   run:
-    - python >=3.9
+    - python >={{ python_min }}
     - h5py
     - pytorch
     - pytorch_geometric
@@ -43,6 +43,7 @@ test:
     - torchmd-train --help
   requires:
     - pip
+    - python {{ python_min }}
 
 about:
   summary: TorchMD-NET provides state-of-the-art neural networks potentials for biomolecular systems
