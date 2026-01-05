@@ -30,8 +30,7 @@ requirements:
     - lightning
     - tqdm
     - numpy
-    - triton  # [linux]
-    - triton-windows  # [win]
+    - triton
     - ase
 
 test:
