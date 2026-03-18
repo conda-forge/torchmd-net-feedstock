@@ -1,6 +1,6 @@
 {% set name = "torchmd-net" %}
-{% set version = "3.0.2" %}
-{% set sha256 = "59d0c81e99f2433c0a88be56ec911332dd15cdd4b25d5ef56e4cc74fa3dda45b" %}
+{% set version = "3.0.3" %}
+{% set sha256 = "927b43dab5b7d8390f33ded2c1aaf04624b931018f5162fccce8a3527c3cfc89" %}
 
 package:
   name: {{ name|lower }}
