@@ -32,6 +32,7 @@ requirements:
     - tqdm
     - numpy
     - ase
+    - warp-lang
 
 test:
   imports:
