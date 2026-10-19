@@ -1,13 +1,13 @@
 {% set name = "torchmd-net" %}
-{% set version = "3.0.3" %}
-{% set sha256 = "927b43dab5b7d8390f33ded2c1aaf04624b931018f5162fccce8a3527c3cfc89" %}
+{% set version = "3.1.0" %}
+{% set sha256 = "8595739262b871758f743380d4736d3b4ccda21631b92089158b0d6a5e7adbcb" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/torchmd_net-{{ version }}.tar.gz
+  url: https://files.pythonhosted.org/packages/source/{{ name[0] }}/{{ name }}/torchmd_net-{{ version }}.tar.gz
   sha256: {{ sha256 }}
 
 build:
